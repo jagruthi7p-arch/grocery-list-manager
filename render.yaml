@@ -10,17 +10,13 @@ services:
       - key: NODE_ENV
         value: production
       - key: MONGO_URI
-        sync: false        # set manually in Render dashboard
+        sync: false
       - key: JWT_SECRET
-        sync: false        # set manually in Render dashboard
+        sync: false
       - key: ADMIN_SECRET
-        sync: false        # set manually in Render dashboard
+        sync: false
       - key: CLIENT_URL
-        fromService:
-          name: glm-frontend
-          type: web
-          property: host
-          envVarKey: RENDER_EXTERNAL_URL
+        sync: false
 
   # Frontend static site
   - type: web
@@ -31,11 +27,7 @@ services:
     staticPublishPath: dist
     envVars:
       - key: VITE_API_URL
-        fromService:
-          name: glm-backend
-          type: web
-          property: host
-          envVarKey: RENDER_EXTERNAL_URL
+        sync: false
     routes:
       - type: rewrite
         source: /*
