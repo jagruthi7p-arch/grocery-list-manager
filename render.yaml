@@ -1,5 +1,5 @@
 services:
-  # ── Backend (Node/Express) ───────────────────────────────────────────────────
+  # Backend API
   - type: web
     name: glm-backend
     runtime: node
@@ -9,16 +9,20 @@ services:
     envVars:
       - key: NODE_ENV
         value: production
-      - key: PORT
-        value: 10000
-      # Set these in the Render dashboard (Dashboard → glm-backend → Environment):
-      # MONGO_URI  → your MongoDB Atlas connection string
-      # JWT_SECRET → a long random secret
-      # ADMIN_SECRET → your chosen admin registration secret
+      - key: MONGO_URI
+        sync: false        # set manually in Render dashboard
+      - key: JWT_SECRET
+        sync: false        # set manually in Render dashboard
+      - key: ADMIN_SECRET
+        sync: false        # set manually in Render dashboard
       - key: CLIENT_URL
-        value: https://glm-frontend.onrender.com   # update if you rename the frontend service
+        fromService:
+          name: glm-frontend
+          type: web
+          property: host
+          envVarKey: RENDER_EXTERNAL_URL
 
-  # ── Frontend (Vite / React – static site) ───────────────────────────────────
+  # Frontend static site
   - type: web
     name: glm-frontend
     runtime: static
@@ -27,9 +31,11 @@ services:
     staticPublishPath: dist
     envVars:
       - key: VITE_API_URL
-        value: https://glm-backend.onrender.com    # update if you rename the backend service
-      - key: VITE_APP_URL
-        value: https://glm-frontend.onrender.com   # update if you rename the frontend service
+        fromService:
+          name: glm-backend
+          type: web
+          property: host
+          envVarKey: RENDER_EXTERNAL_URL
     routes:
       - type: rewrite
         source: /*

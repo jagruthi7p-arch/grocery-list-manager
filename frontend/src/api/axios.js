@@ -1,11 +1,7 @@
 import axios from 'axios';
 
 const api = axios.create({
-  // In production (Render static site) VITE_API_URL is set to the backend URL.
-  // In local dev it is unset and the Vite proxy handles /api → localhost:5000.
-  baseURL: import.meta.env.VITE_API_URL
-    ? `${import.meta.env.VITE_API_URL}/api`
-    : '/api',
+  baseURL: import.meta.env.VITE_API_URL || '/api',
 });
 
 api.interceptors.request.use((config) => {
