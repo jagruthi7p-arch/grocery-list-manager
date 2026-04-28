@@ -8,10 +8,18 @@ import GroupDetail from './components/Groups/GroupDetail';
 import JoinGroup from './components/Groups/JoinGroup';
 import ShoppingList from './components/Lists/ShoppingList';
 import AccountSettings from './components/Account/AccountSettings';
+import AdminPanel from './components/Admin/AdminPanel';
 
 function PrivateRoute({ children }) {
   const { user } = useAuth();
   return user ? children : <Navigate to="/login" replace />;
+}
+
+function AdminRoute({ children }) {
+  const { user } = useAuth();
+  if (!user) return <Navigate to="/login" replace />;
+  if (user.role !== 'admin') return <Navigate to="/dashboard" replace />;
+  return children;
 }
 
 function PublicRoute({ children }) {
@@ -33,6 +41,7 @@ export default function App() {
           <Route path="/join/:inviteCode" element={<JoinGroup />} />
           <Route path="/lists/:id" element={<PrivateRoute><ShoppingList /></PrivateRoute>} />
           <Route path="/account" element={<PrivateRoute><AccountSettings /></PrivateRoute>} />
+          <Route path="/admin" element={<AdminRoute><AdminPanel /></AdminRoute>} />
           <Route path="*" element={<Navigate to="/dashboard" replace />} />
         </Routes>
       </BrowserRouter>

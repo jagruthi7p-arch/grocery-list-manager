@@ -58,6 +58,14 @@ export default function Dashboard() {
           >
             Account
           </Link>
+          {user?.role === 'admin' && (
+            <Link
+              to="/admin"
+              className="bg-yellow-400 hover:bg-yellow-300 text-green-900 text-sm font-medium px-3 py-1 rounded-lg transition"
+            >
+              Admin Panel
+            </Link>
+          )}
           <button
             onClick={handleLogout}
             className="bg-white text-green-700 text-sm font-medium px-3 py-1 rounded-lg hover:bg-green-50 transition"
