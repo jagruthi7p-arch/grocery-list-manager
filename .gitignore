@@ -18,3 +18,11 @@ npm-debug.log*
 # OS
 .DS_Store
 Thumbs.db
+
+# Temp Word lock files
+~$*.docx
+
+# Root-level playwright install (dev tool, not part of project)
+node_modules/
+package.json
+package-lock.json
